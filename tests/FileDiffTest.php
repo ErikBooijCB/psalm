@@ -34,7 +34,21 @@ class FileDiffTest extends TestCase
                 }',
                 ['Foo\A::foo']
             ],
-            'removeFunction' => [
+            'removeFunctionAtEnd' => [
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                    public function bat() {
+                        $c = 1;
+                    }
+                }',
                 '<?php
                 namespace Foo;
 
@@ -46,15 +60,63 @@ class FileDiffTest extends TestCase
                         $b = 1;
                     }
                 }',
+                ['Foo\A::foo', 'Foo\A::bar']
+            ],
+            'removeFunctionAtBeginning' => [
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                    public function bat() {
+                        $c = 1;
+                    }
+                }',
                 '<?php
                 namespace Foo;
 
                 class A {
                     public function bar() {
-                        $b = 2;
+                        $b = 1;
+                    }
+                    public function bat() {
+                        $c = 1;
                     }
                 }',
-                ['Foo\A::bar']
+                ['Foo\A::bar', 'Foo\A::bat']
+            ],
+            'removeFunctionInMiddle' => [
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                    public function bat() {
+                        $c = 1;
+                    }
+                }',
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bat() {
+                        $c = 1;
+                    }
+                }',
+                ['Foo\A::foo', 'Foo\A::bat']
             ],
             'changeNamespace' => [
                 '<?php
@@ -125,6 +187,90 @@ class FileDiffTest extends TestCase
                 class A {
                     public function foo() {
                         $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                }',
+                ['Foo\A::foo', 'Foo\A::bar']
+            ],
+            'newFunctionAtEnd' => [
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                }',
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                    public function bat() {
+                        $c = 1;
+                    }
+                }',
+                ['Foo\A::foo', 'Foo\A::bar']
+            ],
+            'newFunctionAtBeginning' => [
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                }',
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function bat() {
+                        $c = 1;
+                    }
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                }',
+                ['Foo\A::foo', 'Foo\A::bar']
+            ],
+            'newFunctionInMiddle' => [
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bar() {
+                        $b = 1;
+                    }
+                }',
+                '<?php
+                namespace Foo;
+
+                class A {
+                    public function foo() {
+                        $a = 1;
+                    }
+                    public function bat() {
+                        $c = 1;
                     }
                     public function bar() {
                         $b = 1;
