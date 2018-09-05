@@ -4,9 +4,28 @@ namespace Psalm\Tests;
 class FileDiffTest extends TestCase
 {
     /**
+     * @dataProvider getChanges
+     *
+     * @param string $a
+     * @param string $b
+     * @param string[] $changed_methods
+     *
      * @return void
      */
-    public function getChanges()
+    public function testInvalidCode($a, $b, array $changed_methods)
+    {
+        if (strpos($this->getTestName(), 'SKIPPED-') !== false) {
+            $this->markTestSkipped();
+        }
+
+        $a_stmts = \Psalm\Provider\StatementsProvider::parseStatements($a);
+        $b_stmts = \Psalm\Provider\StatementsProvider::parseStatements($b);
+    }
+
+    /**
+     * @return void
+     */
+    private function getChanges()
     {
         return [
             'simpleChange' => [
